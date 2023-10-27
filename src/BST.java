@@ -7,6 +7,11 @@ public class BST<Key extends Comparable<Key>, Value> implements IST<Key, Value> 
     Node<Key, Value> root;
 
     @Override
+    public Node<Key, Value> getRoot() {
+        return root;
+    }
+
+    @Override
     public int size() {
         return size(root);
     }

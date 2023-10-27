@@ -1,4 +1,6 @@
 public interface IST<Key extends Comparable<Key>, Value> {
+    Node<Key, Value> getRoot();
+
     int size();
 
     Value get(Key key);

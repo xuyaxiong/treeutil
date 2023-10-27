@@ -27,6 +27,11 @@ public class TreeUtil {
             this.isVirtual = isVirtual;
         }
 
+        public InnerNode(String key, boolean isVirtual, boolean color) {
+            this(key, isVirtual);
+            this.color = color;
+        }
+
         public boolean isRed() {
             return color == RED;
         }
@@ -54,9 +59,7 @@ public class TreeUtil {
     }
 
     private static String repeatChar(int n, char c) {
-        StringBuilder sb = new StringBuilder();
-        sb.append(String.valueOf(c).repeat(Math.max(0, n)));
-        return sb.toString();
+        return String.valueOf(c).repeat(Math.max(0, n));
     }
 
     private static String formatKey(String key) {
@@ -134,24 +137,24 @@ public class TreeUtil {
         return nodes;
     }
 
-    public static List<InnerNode> treeToList(BST<String, Integer> tree) {
+    public static List<InnerNode> treeToList(IST<String, Integer> tree) {
         int sizeOfReal = tree.size();
         int currCount = 0;
-        Queue<Node> q = new LinkedList<>();
+        Queue<Node<String, Integer>> q = new LinkedList<>();
         ArrayList<InnerNode> nodes = new ArrayList<>();
-        InnerNode root = new InnerNode(tree.root.key, false);
+        InnerNode root = new InnerNode(tree.getRoot().key, false, false);
         nodes.add(root);
         currCount++;
-        q.offer(tree.root);
+        q.offer(tree.getRoot());
         while (!q.isEmpty()) {
-            Node t = q.poll();
+            Node<String, Integer> t = q.poll();
             InnerNode tmp;
             if (t.left == null) {
                 tmp = new InnerNode("", true);
                 nodes.add(tmp);
-                q.offer(new Node("", -1, 0));
+                q.offer(new Node<>("", -1, 0));
             } else {
-                tmp = new InnerNode((String) t.left.key, false);
+                tmp = new InnerNode(t.left.key, false, t.left.color);
                 nodes.add(tmp);
                 q.offer(t.left);
                 currCount++;
@@ -160,9 +163,9 @@ public class TreeUtil {
             if (t.right == null) {
                 tmp = new InnerNode("", true);
                 nodes.add(tmp);
-                q.offer(new Node("", -1, 0));
+                q.offer(new Node<>("", -1, 0));
             } else {
-                tmp = new InnerNode((String) t.right.key, false);
+                tmp = new InnerNode(t.right.key, false, t.right.color);
                 nodes.add(tmp);
                 q.offer(t.right);
                 currCount++;
@@ -211,15 +214,14 @@ public class TreeUtil {
                     int childPos = (int) (Math.pow(2, level) - 1 + j);
                     InnerNode childNode = list.get(childPos);
                     if (!childNode.isVirtual) {
+                        String s;
                         if (j % 2 == 0) {
-                            String s = "/";
-                            if (childNode.isRed()) s = toRedStr(s);
-                            System.out.print(s);
+                            s = "/";
                         } else {
-                            String s = "\\";
-                            if (childNode.isRed()) s = toRedStr(s);
-                            System.out.print(s);
+                            s = "\\";
                         }
+                        if (childNode.isRed()) s = toRedStr(s);
+                        System.out.print(s);
                     } else {
                         System.out.print(" ");
                     }
