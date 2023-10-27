@@ -9,8 +9,15 @@ import java.util.Queue;
  * 2023.10.27
  */
 public class TreeUtil {
+    // 键的长度
+    private static final int KEY_LEN = 3;
+    private static final boolean RED = true;
+    private static final boolean BLACK = false;
+
     static class InnerNode {
         String key;
+        String val;
+        boolean color;
         InnerNode left, right;
         int midPos;
         boolean isVirtual; // 是否为虚拟节点
@@ -20,14 +27,15 @@ public class TreeUtil {
             this.isVirtual = isVirtual;
         }
 
+        public boolean isRed() {
+            return color == RED;
+        }
+
         @Override
         public String toString() {
             return this.key;
         }
     }
-
-    // 键的长度
-    private static final int KEY_LEN = 3;
 
     // 获取树的高度
     private static int getTreeHeight(int size) {
@@ -113,6 +121,7 @@ public class TreeUtil {
         for (int i = 0; i < N; ++i) {
             InnerNode node = new InnerNode(i + "", false);
             node.midPos = getMidPos(height, i);
+            if (i % 3 == 1) node.color = RED;
             nodes.add(node);
         }
         for (int i = 0; i < N; ++i) {
@@ -184,9 +193,11 @@ public class TreeUtil {
                 int gap = getGapFromLevel(h, level);
                 System.out.print(repeatChar(gap, ' '));
             }
-            if (!node.isVirtual)
-                System.out.print(formatKey(node.key));
-            else System.out.print(formatVirtualKey());
+            if (!node.isVirtual) {
+                String key = formatKey(node.key);
+//                if (node.isRed()) key = toRedStr(key);
+                System.out.print(key);
+            } else System.out.print(formatVirtualKey());
             if (isLast(i)) {
                 System.out.println();
                 // 打印连接线
@@ -198,11 +209,16 @@ public class TreeUtil {
                     if (pos == -1) break;
                     System.out.print(repeatChar(pos - lastPos - 1, ' '));
                     int childPos = (int) (Math.pow(2, level) - 1 + j);
-                    if (!list.get(childPos).isVirtual) {
+                    InnerNode childNode = list.get(childPos);
+                    if (!childNode.isVirtual) {
                         if (j % 2 == 0) {
-                            System.out.print("/");
+                            String s = "/";
+                            if (childNode.isRed()) s = toRedStr(s);
+                            System.out.print(s);
                         } else {
-                            System.out.print("\\");
+                            String s = "\\";
+                            if (childNode.isRed()) s = toRedStr(s);
+                            System.out.print(s);
                         }
                     } else {
                         System.out.print(" ");
@@ -212,6 +228,12 @@ public class TreeUtil {
                 System.out.println();
             }
         }
+    }
+
+    private static String toRedStr(String s) {
+        String redColor = "\u001B[31m";
+        String resetColor = "\u001B[0m"; // 重置颜色为默认颜色
+        return redColor + s + resetColor;
     }
 
     public static void main(String[] args) {
