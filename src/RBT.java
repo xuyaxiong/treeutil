@@ -54,8 +54,38 @@ public class RBT<Key extends Comparable<Key>, Value> implements IST<Key, Value> 
 
     @Override
     public void deleteMin() {
-
+        if (!isRed(root.left) && !isRed(root.right))
+            root.color = true;
+        root = deleteMin(root);
+        root.color = false;
     }
+
+    private Node<Key, Value> deleteMin(Node<Key, Value> x) {
+        if (x.left == null) return null;
+        if (!isRed(x.left) && !isRed(x.left.left))
+            x = moveRedLeft(x);
+        x.left = deleteMin(x.left);
+        return balance(x);
+    }
+
+    private Node<Key, Value> balance(Node<Key, Value> x) {
+        if (isRed(x.right) && !isRed(x.left)) x = rotateLeft(x);
+        if (isRed(x.left) && isRed(x.left.left)) x = rotateRight(x);
+        if (isRed(x.left) && isRed(x.right)) flipColor(x);
+        x.N = size(x.left) + size(x.right) + 1;
+        return x;
+    }
+
+    private Node<Key, Value> moveRedLeft(Node<Key, Value> x) {
+        flipColor(x);
+        if (isRed(x.right.left)) {
+            x.right = rotateRight(x.right);
+            x = rotateLeft(x);
+            flipColor(x);
+        }
+        return x;
+    }
+
 
     @Override
     public void delete(Key key) {
@@ -132,5 +162,4 @@ public class RBT<Key extends Comparable<Key>, Value> implements IST<Key, Value> 
             s = StdIn.readString();
         }
     }
-
 }
