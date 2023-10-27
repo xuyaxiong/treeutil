@@ -35,11 +35,6 @@ public class TreeUtil {
         public boolean isRed() {
             return color == RED;
         }
-
-        @Override
-        public String toString() {
-            return this.key;
-        }
     }
 
     // 获取树的高度
