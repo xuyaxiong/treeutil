@@ -1,7 +1,5 @@
 import edu.princeton.cs.algs4.Queue;
 
-import java.util.List;
-
 public class BST<Key extends Comparable<Key>, Value> implements IST<Key, Value> {
 
     Node<Key, Value> root;
@@ -186,8 +184,5 @@ public class BST<Key extends Comparable<Key>, Value> implements IST<Key, Value> 
         st.put("P", 10);
         st.put("L", 11);
         st.put("E", 12);
-
-        List<TreeUtil.InnerNode> innerNodes = TreeUtil.treeToList(st);
-        TreeUtil.printTree(innerNodes);
     }
 }

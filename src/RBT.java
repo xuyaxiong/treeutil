@@ -1,4 +1,4 @@
-import java.util.List;
+import edu.princeton.cs.algs4.StdIn;
 
 public class RBT<Key extends Comparable<Key>, Value> implements IST<Key, Value> {
     private Node<Key, Value> root;
@@ -123,12 +123,14 @@ public class RBT<Key extends Comparable<Key>, Value> implements IST<Key, Value> 
     }
 
     public static void main(String[] args) {
-        IST<String, Integer> rbt = new RBT<>();
-        for (int i = 0; i < 10; ++i) {
-            rbt.put(i + "", i);
+        RBT<String, String> rbt = new RBT<>();
+        String s = StdIn.readString();
+        while (s != null) {
+            rbt.put(s, s);
+            TreeUtil.printTree(rbt);
+            System.out.println();
+            s = StdIn.readString();
         }
-        List<TreeUtil.InnerNode> nodes = TreeUtil.treeToList(rbt);
-        TreeUtil.printTree(nodes);
     }
 
 }

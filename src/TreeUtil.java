@@ -132,22 +132,23 @@ public class TreeUtil {
         return nodes;
     }
 
-    public static List<InnerNode> treeToList(IST<String, Integer> tree) {
+    public static List<InnerNode> treeToList(IST<String, String> tree) {
         int sizeOfReal = tree.size();
         int currCount = 0;
-        Queue<Node<String, Integer>> q = new LinkedList<>();
+        Queue<Node<String, String>> q = new LinkedList<>();
         ArrayList<InnerNode> nodes = new ArrayList<>();
         InnerNode root = new InnerNode(tree.getRoot().key, false, false);
         nodes.add(root);
         currCount++;
+        if(currCount == sizeOfReal) return nodes;
         q.offer(tree.getRoot());
         while (!q.isEmpty()) {
-            Node<String, Integer> t = q.poll();
+            Node<String, String> t = q.poll();
             InnerNode tmp;
             if (t.left == null) {
                 tmp = new InnerNode("", true);
                 nodes.add(tmp);
-                q.offer(new Node<>("", -1, 0));
+                q.offer(new Node<>("", "", 0));
             } else {
                 tmp = new InnerNode(t.left.key, false, t.left.color);
                 nodes.add(tmp);
@@ -158,7 +159,7 @@ public class TreeUtil {
             if (t.right == null) {
                 tmp = new InnerNode("", true);
                 nodes.add(tmp);
-                q.offer(new Node<>("", -1, 0));
+                q.offer(new Node<>("", "", 0));
             } else {
                 tmp = new InnerNode(t.right.key, false, t.right.color);
                 nodes.add(tmp);
@@ -227,6 +228,11 @@ public class TreeUtil {
         }
     }
 
+    public static void printTree(IST<String, String> tree) {
+        List<InnerNode> nodes = treeToList(tree);
+        printTree(nodes);
+    }
+
     private static String toRedStr(String s) {
         String redColor = "\u001B[31m";
         String resetColor = "\u001B[0m"; // 重置颜色为默认颜色
@@ -234,7 +240,7 @@ public class TreeUtil {
     }
 
     public static void main(String[] args) {
-        List<InnerNode> list = getExampleTree(50);
+        List<InnerNode> list = getExampleTree(1);
         printTree(list);
     }
 }
