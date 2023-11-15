@@ -54,10 +54,12 @@ public class RBT<Key extends Comparable<Key>, Value> implements IST<Key, Value> 
 
     @Override
     public void deleteMin() {
+        if (root == null) return;
         if (!isRed(root.left) && !isRed(root.right))
             root.color = true;
         root = deleteMin(root);
-        root.color = false;
+        if (root != null)
+            root.color = false;
     }
 
     private Node<Key, Value> deleteMin(Node<Key, Value> x) {
@@ -156,7 +158,11 @@ public class RBT<Key extends Comparable<Key>, Value> implements IST<Key, Value> 
         RBT<String, String> rbt = new RBT<>();
         String s = StdIn.readString();
         while (s != null) {
-            rbt.put(s, s);
+            if (s.startsWith("-")) {
+                rbt.deleteMin();
+            } else {
+                rbt.put(s, s);
+            }
             TreeUtil.printTree(rbt);
             System.out.println();
             s = StdIn.readString();

@@ -133,18 +133,19 @@ public class TreeUtil {
     }
 
     public static List<InnerNode> treeToList(IST<String, String> tree) {
+        ArrayList<InnerNode> nodes = new ArrayList<>();
+        if (tree.getRoot() == null) return nodes;
         int sizeOfReal = tree.size();
         int currCount = 0;
         Queue<Node<String, String>> q = new LinkedList<>();
-        ArrayList<InnerNode> nodes = new ArrayList<>();
-        InnerNode root = new InnerNode(tree.getRoot().key, false, false);
-        nodes.add(root);
+        InnerNode tmp;
+        tmp = new InnerNode(tree.getRoot().key, false, false);
+        nodes.add(tmp);
         currCount++;
-        if(currCount == sizeOfReal) return nodes;
+        if (currCount == sizeOfReal) return nodes;
         q.offer(tree.getRoot());
         while (!q.isEmpty()) {
             Node<String, String> t = q.poll();
-            InnerNode tmp;
             if (t.left == null) {
                 tmp = new InnerNode("", true);
                 nodes.add(tmp);
